@@ -16,7 +16,7 @@ D = [1 0.5 0.5 0.5 0.5];          % scaling factor - for individualization
 T_pn = [0 0 0 0 0 0]; 
 del_pn = [0 0 0 0 0 0];
 
-% TO DO: implement fractional delaylines!!------------
+% TO DO: implement fractional delaylines!!
 
 % calculate 5 disting delays
 for i = 2:6

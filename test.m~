@@ -1,0 +1,27 @@
+clear all
+
+h = rand(1,64); % impulse response
+h = [0 1 ones(1,62)];
+fs = 1000;
+Nfft = 128;
+[H,F] = freqz(h,1,Nfft,fs);
+semilogx(F,mag2db(abs(H))); grid on;
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+s = h';
+b = model(s, 10,90); 
+
+[H1,F] = freqz(b(:,1),1,Nfft,fs);
+[H2,F] = freqz(b(:,2),1,Nfft,fs);
+figure;
+semilogx(F,mag2db(abs(H1))); grid on;
+hold on
+semilogx(F,mag2db(abs(H2))); grid on;
+xlabel('Frequency (Hz)'); ylabel('Magnitude (dB)');
+
+
+figure;
+plot(b(:,1)); 
+hold on
+plot(b(:,2));
+xlabel('Time(samples)'); ylabel('Magnitude (dB)');

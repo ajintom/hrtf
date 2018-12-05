@@ -1,9 +1,9 @@
-function hs_out = hs_filter(x, az, fs, fig)
+function hs_out = hs_filter(x,fs, az, fig)
 
 % hs_filter applies head shodowing effects to input signal x for given
 % azimuthal angle, az
 
-% az = az + 90;    % for ease of implementation 
+az = az + 90;    % for ease of implementation 
 az0 = 150;       % theta0
 al_min = 0.1;    % alpha_min
 a = 0.08;        % effective head radius
