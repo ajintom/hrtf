@@ -19,13 +19,13 @@ fs=48000;
 
 % Load signal to binauralise
 % [sig,sf] = audioread('DRUMSET3SHORT_48.wav');
-% [sig,sf] = audioread('bday.wav');
-[sig,sf] = audioread('sax.m4a');
+[sig,sf] = audioread('bday.wav');
+% [sig,sf] = audioread('sax.m4a');
 
 % Load mono IR and convert to 48kHz : http://www.cksde.com/p_6_250.htm
 [mon_ir, mon_ir_fs]=audioread('IR_bighall1.wav');
 % [mon_ir, mon_ir_fs]=audioread('IR_dubwise.wav');
-% -- [mon_ir, mon_ir_fs]=audioread('IR_minicave.wav');
+% [mon_ir, mon_ir_fs]=audioread('IR_minicave.wav');
 mon_ir = mon_ir(:,1);
 if (fs ~= mon_ir_fs)
     mon_ir=resample(mon_ir,double(fs),double(floor(mon_ir_fs)));
@@ -264,6 +264,8 @@ c(:,2) = c(:,2)./max(c(:,2));
 % d(:,2) = conv(sig(:,2), dir(:,2));
 % 
 % 
+
+% Run following commands one by one for sound output
 
 % sound(mon_ir,fs)
 % sound(bin_ir_diff,fs)
