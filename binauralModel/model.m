@@ -1,6 +1,11 @@
 function binaural_out = model(sig, az, el)
 
-% clear all;  [sig,fs] = audioread('sine-440.wav');  az = 1; el = 90;
+% instruction to run: 
+
+% az = -90;el = 80; 
+% [sig,fs] = audioread('phrase-sax.wav');
+% sound(model(sig, az, el),fs);
+%---------------------------------------------
 
 fs = 44100; % sample rate
 
@@ -80,19 +85,6 @@ binaural_out = binaural_out./max(binaural_out);
 % sound(binaural_out,fs);
 
 end
-
-% figure;
-% [sig,fs] = audioread('sine-440.wav');
-% theta = [0,60,75,90,105,120,135,150,160,180];
-% for i=1:length(theta)
-%     y = model(sig,theta(i),90);
-%     psd(spectrum.periodogram,y(:,1),'Fs',fs)
-%     hold on
-% end
-
-% [sig,fs] = audioread('phrase-sax.wav');
-% sound(model(sig, 10, 50),fs);
-
 
 
 

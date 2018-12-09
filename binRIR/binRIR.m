@@ -18,9 +18,9 @@ early_reflection_time=0.15; % defines the time frame in which early reflections 
 fs=48000;
 
 % Load signal to binauralise
-% [sig,sf] = audioread('DRUMSET3SHORT_48.wav');
-[sig,sf] = audioread('bday.wav');
-% [sig,sf] = audioread('sax.m4a');
+[sig,sf] = audioread('audio_drum.wav');
+% [sig,sf] = audioread('audio_bday.wav');
+% [sig,sf] = audioread('audio_sax.m4a');
 
 % Load mono IR and convert to 48kHz : http://www.cksde.com/p_6_250.htm
 [mon_ir, mon_ir_fs]=audioread('IR_bighall1.wav');
@@ -275,4 +275,11 @@ c(:,2) = c(:,2)./max(c(:,2));
 % sound(sig,sf);
 % sound(c,sf);
 % clear sound
+
+audiowrite('demo_out_mon_ir.wav',mon_ir,fs);
+audiowrite('demo_out_bin_ir_diff.wav',bin_ir_diff,fs);
+audiowrite('demo_out_bin_dir_er.wav',bin_dir_er,fs);
+audiowrite('demo_out_final_bin_ir_synth.wav',bin_ir_synth,fs);
+audiowrite('demo_out_original_audio.wav',sig,fs);
+audiowrite('demo_out_final_audio_conv_binRIR.wav',c,fs);
 
