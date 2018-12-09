@@ -10,5 +10,4 @@ Dependencies include: [github.com/AudioGroupCologne/SOFiA]
 For HRTF and HRIR plots run /binauralModel/run_*.m
 
 
-
 Project report available at [ajintom.com/618/]
