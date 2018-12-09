@@ -14,13 +14,12 @@ p = -200;
 
 direct_sound_distance_recording=7.5; % Distance between sound source and listener 
 direct_sound_time_frame=0.005; % time frame in seconds after the maximum of the direct sound that shall be assigned to the direct sound
-
 % compute RT_60 time for given room Volume(V), Total Surface(S), Average
 % Absorption Coefficient(alfa)
-V = 300; S = 1500; alfa = 0.2;
-RT60 = 0.163 * V/(-log(1-alfa)*S);
-early_reflection_time=RT60; % defines the time frame in which early reflections are detected. Reduce for rooms with very short RT60
 
+RT60 = 0.163
+
+early_reflection_time=0.15; % defines the time frame in which early reflections are detected. Reduce for rooms with very short RT60
 fs=48000;
 
 % Load signal to binauralise
