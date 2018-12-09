@@ -1,10 +1,10 @@
 /*
  ==============================================================================
- 
+
  This file was auto-generated!
- 
+
  It contains the basic framework code for a JUCE plugin processor.
- 
+
  ==============================================================================
  */
 
@@ -15,7 +15,7 @@
 
 float coef[6];
 float* filter(float az,float el, double fs){
-    
+
     az = az + 90;    // for ease of thought process
     int w0 = 4175; // speed of sound / radius of head
     float alpha = 1.05 + 0.95*cos( (az/150) * pi); // parameters adapted from model fine tuned in MATLAB
@@ -23,10 +23,10 @@ float* filter(float az,float el, double fs){
     // filter coefficients
     coef[1]  = (alpha + w0/fs) / (1 + w0/fs);
     coef[2]   = (-1*alpha + w0/fs) / (1 + w0/fs);
-    
+
     coef[3] = 1;
     coef[4] = -1 * (1 - w0/fs) / (1 + w0/fs);
-    
+
     if (abs(az) < 90){
         gd  = - fs/w0 * (cos(az * pi/180) - 1) ;
     }
@@ -34,14 +34,14 @@ float* filter(float az,float el, double fs){
         gd  = fs/w0 * ((abs(az) - 90) * pi/180 + 1);
     }
     coef[0] = (1-gd)/(1+gd);
-    
-    
+
+
     coef[5] = (fs/1000) * 1.2*(180 - az)/180 * (1 - 0.00004*((el - 80)*180/(180 + az)) * ((el - 80)*180/(180 + az)) );
-    
+
     return coef;
-    
-    
-    
+
+
+
     // head-shadow filter
     //    for (int i = 1; i < numSamples; ++i)
     //        samples[i] = b1 * samples[i] + b2 * samples[(i-1)];// - a2 * samples[(i-1) ];
@@ -51,7 +51,7 @@ float* filter(float az,float el, double fs){
     //    for (int i = 1; i < numSamples; ++i)
     //        samples[i] = b1 * samples[i] + b2 * samples[(i-1) ] - a2 * samples[(i-1) ];
     //
-    
+
 }
 
 
@@ -142,11 +142,11 @@ void IDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
-    
-    
+
+
     dbuf.setSize(getNumOutputChannels(),  100000);
     dbuf.clear();
-    
+
     dw = 1;
     dr = 1;
     drp = 0;
@@ -175,13 +175,13 @@ bool IDelayAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) c
     if (layouts.getMainOutputChannelSet() != AudioChannelSet::mono()
         && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         return false;
-    
+
     // This checks if the input layout matches the output layout
 #if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
 #endif
-    
+
     return true;
 #endif
 }
@@ -192,32 +192,27 @@ void IDelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
     ScopedNoDenormals noDenormals;
     const int totalNumInputChannels  = getTotalNumInputChannels();
     const int totalNumOutputChannels = getTotalNumOutputChannels();
-    
+
+    // clear audio buffer
     for (int i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-    
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    
+
     int numSamples = buffer.getNumSamples();
     float az_now = az;
     float el_now = 1.0;
     float l = (az + 90)/180;
 
-    
-    
+    // audio buffer left and right copy
     float* channelDataL = buffer.getWritePointer(0);
     float* channelDataR = buffer.getWritePointer(1);
-    
-    //
+
+    // head-shadow filter coefficients computation
     float* cL =  filter(az_now,el_now,fs);
     float b1_L = cL[1], b2_L = cL[2], a2_L = cL[4],tsL = cL[5];
     float* cR =  filter(-1*az_now,el_now,fs);
     float b1_R = cR[1], b2_R = cR[2], a2_R = cR[4], tsR = cL[5];
-   
-    //
- 
-    
+
+    // main audio processing loop
     for (int i = 0; i < numSamples; ++i)
     {
         // input buffer to delayline
@@ -225,18 +220,19 @@ void IDelayAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
         // delay-line to output buffer
         channelDataL[i]= (b1_L * dbuf.getSample(0, dr) + b2_L* dbuf.getSample(0, drp) - a2_L * tempL); //filter equation in time-domain
         tempL = channelDataL[i];
-        
+
         dbuf.setSample(1, dw, channelDataR[i]);
         channelDataR[i]= (b1_R * dbuf.getSample(1, dr) + b2_R* dbuf.getSample(1, drp) - a2_R * tempR);
         tempR = channelDataR[i];
-        
+
+        // advance pointers
         dw = (dw + 1 ) % ds ;
         dr = (dr + 1 ) % ds;
         drp = (drp + 1 ) % ds;
-        
+
     }
-    
-    
+
+
 }
 
 //==============================================================================
