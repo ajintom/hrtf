@@ -1,5 +1,5 @@
-# hrtf
-## An Auralization Framework for Virtual Acoustics:
+
+# An Auralization Framework for Virtual Acoustics:
 
 This project aims to build a structural model for binaural sound synthesis followed by investigating aurlaization and stereo-to-binaural upmixing techniques using time-domain (acoustics modelling) as well as frequency-domain (signal processing) approaches.
 
