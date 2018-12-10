@@ -17,4 +17,5 @@ Project report available at [ajintom.com/618/]
 
 
 
-WIP: The binaural model is implemented as a VST plugin [/binJUCE/Builds/MacOSX/build/Debug/binJUCE.app/Contents/MacOS/binJUCE] using JUCE [juce.com].
+WIP: 
+The binaural model is implemented as a VST plugin [/binJUCE/Builds/MacOSX/build/Debug/binJUCE.app/Contents/MacOS/binJUCE] using JUCE [juce.com].
